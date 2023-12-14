@@ -148,4 +148,43 @@ class Idioms {
         (1..3).forEach { i -> sum += i }
         assertSame(6, sum)
     }
+
+    @Test
+    fun `lazy property`() {
+        val number = 10
+        val p: String by lazy { "spark lee is age ${number + 18}" }
+        assertEquals("spark lee is age 28", p)
+    }
+
+    @Test
+    fun `extension functions`() {
+        fun String.appendBar(): String {
+            return "$this bar"
+        }
+        assertEquals("foo bar", "foo".appendBar())
+
+        fun Int.multiplies(delta: Int): Int {
+            return this * delta
+        }
+        assertSame(30, 3.multiplies(10))
+    }
+
+    @Test
+    fun `create a singleton`() {
+        assertEquals("user", UserRepository.modelName)
+        assertEquals("model user", UserRepository.getModelNameDesc())
+        assertSame(3, UserRepository.countByGender("male"))
+    }
+}
+
+object UserRepository {
+    val modelName = "user"
+
+    fun countByGender(gender: String): Int {
+        return 3
+    }
+
+    fun getModelNameDesc(): String {
+        return "model $modelName"
+    }
 }
